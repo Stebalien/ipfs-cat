@@ -12,9 +12,9 @@ const node = new Promise((res, rej) => {
   n.on('error', rej);
 });
 
-function GetFile(hash) {
-  // TODO: Don't actually download the file.
-  return req.get('https://ipfs.io/ipfs/' + hash);
+function Upload(hash) {
+  // TODO: Progress (we know enough to determine this)
+  return req.get('https://ipfs.io/api/v0/refs/' + hash + '?recursive=true');
 }
 
 function PasteFile(buffer, statusCb) {
@@ -28,7 +28,7 @@ function PasteFile(buffer, statusCb) {
     statusCb("uploading file...");
     let hash = result[0].hash;
     let url = 'https://ipfs.io/ipfs/' + hash;
-    return GetFile(hash).then(() => hash);
+    return Upload(hash).then(() => hash);
   });
 }
 
