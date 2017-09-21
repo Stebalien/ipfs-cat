@@ -2,11 +2,15 @@
 
 const IPFS = require('ipfs');
 const req = require('request-promise-native');
+const concat = require('concat-stream');
 const domready = require("domready");
 const ace = require("brace");
 
-const node = new IPFS();
-let fileMultihash;
+const node = new Promise((res, rej) => {
+  const n = new IPFS();
+  n.on('ready', () => res(n));
+  n.on('error', rej);
+});
 
 function GetFile(hash) {
   // TODO: Don't actually download the file.
@@ -18,7 +22,9 @@ function PasteFile(buffer, statusCb) {
     statusCb = function() {};
   }
   statusCb("adding file...");
-  return node.files.add(buffer).then((result) => {
+  return node.then((n) => {
+    return n.files.add(buffer);
+  }).then((result) => {
     statusCb("uploading file...");
     let hash = result[0].hash;
     let url = 'https://ipfs.io/ipfs/' + hash;
@@ -58,8 +64,33 @@ domready(() => {
 
   var hash = window.location.hash.substring(1);
   if (hash !== "") {
-    // TODO: Use IPFS for this. Didn't work for some reason...
-    GetFile(hash).then((data) => {
+    // TODO: n.files.cat doesn't work for some reason...
+    node.then((n) => {
+      return n.files.get(hash);
+    }).then((stream) => {
+      return new Promise((res, rej) => {
+        var found = false;
+        stream.on('data', (f) => {
+          if (f.path === hash) {
+            found = true;
+            f.content.on('error', (e) => rej(e));
+            f.content.pipe(concat(res));
+          }
+        });
+        stream.on('end', () => {
+          if (!found) {
+            rej(new Error("File Not Found"));
+          }
+        });
+        stream.on('error', (e) => {
+          // Otherwise, this will be rejected by the file's stream.
+          if (!found) {
+            rej(e);
+          }
+        });
+        stream.resume();
+      });
+    }).then((data) => {
       editor.setValue(data.toString());
       setHash(hash);
       setReadOnly(false);
