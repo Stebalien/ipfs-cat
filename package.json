@@ -1,0 +1,25 @@
+{
+  "name": "ipfs-cat",
+  "version": "0.0.0",
+  "description": "IPFS cat",
+  "main": "cat.js",
+  "scripts": {
+    "bundle": "browserify -t babelify -g uglifyify index.js -o bundled.js",
+    "ipfs": "ipfs add -w index.html bundled.js"
+  },
+  "author": "Steven Allen <stebalien@protocol.ai>",
+  "license": "MIT",
+  "dependencies": {
+    "brace": "^0.10.0",
+    "domready": "^1.0.8",
+    "ipfs": "^0.25.4",
+    "request": "^2.82.0",
+    "request-promise-native": "^1.0.4"
+  },
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "babel-preset-env": "^1.6.0",
+    "babelify": "^7.3.0",
+    "uglifyify": "^4.0.3"
+  }
+}
