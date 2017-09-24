@@ -73,7 +73,7 @@ function PasteFile(buffer, statusCb) {
   }).then((result) => {
     statusCb("uploading file...");
     hash = result[0].hash;
-  }).then(() => refs(n, hash))
+  }).then(() => Refs(n, hash))
     .then((pieces) => {
       console.log(pieces);
       return new Promise((res, rej) => {
