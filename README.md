@@ -4,7 +4,7 @@ A simple self-contained webapp for editing/pasting files on IPFS.
 
 ## Usage
 
-Open [/ipfs/QmfMGbJa4nCY1DVKW1JyyGrgjGwwKgMCTFeUHLwwN4G5xy](https://ipfs.io/ipfs/QmfMGbJa4nCY1DVKW1JyyGrgjGwwKgMCTFeUHLwwN4G5xy) and start writing.
+Open [/ipfs/QmNoFVkagSXcH5NQYkPcNhi4viNzeLKs7ePT7c38kouGiH](https://ipfs.io/ipfs/QmNoFVkagSXcH5NQYkPcNhi4viNzeLKs7ePT7c38kouGiH) and start writing.
 
 ## Hacking
 
@@ -36,4 +36,4 @@ npm run ipfs
 
 ## License
 
-MIT (c) Protocol Labs 2017
+MIT (c) 2017 Protocol Labs
